@@ -7,10 +7,19 @@ services:
       dockerfile: Dockerfile
     ports:
       - '8080:8080'
-    environment:
-      - NODE_ENV=production
     volumes:
       - .:/usr/src/app
-    command: npm run start
+    depends_on:
+      - mongodb
 
-
+  mongodb:
+    image: mongo
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=pass
+    volumes:
+      - type: bind
+        source: ./data
+        target: /data/db

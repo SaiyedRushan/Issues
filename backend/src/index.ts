@@ -1,5 +1,9 @@
 import { env } from '@/config/envConfig'
 import { app } from '@/server'
+import connectDB from './config/db'
+
+// connect to database
+connectDB()
 
 // Start server
 const server = app.listen(env.PORT, () => {
