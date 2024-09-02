@@ -5,7 +5,6 @@ import { StatusCodes } from 'http-status-codes'
 export const getIssues = async (_req: Request, res: Response) => {
   try {
     const issues = await issueService.findAll()
-    if (!issues || issues.length === 0) return res.status(StatusCodes.NOT_FOUND).json({ error: 'No issues found' })
     res.json(issues)
   } catch (err) {
     console.error(err)

@@ -17,8 +17,8 @@ export const issueRouter: Router = express.Router()
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/Issue'
- *      404:
- *        description: Issue not found
+ *      500:
+ *        description: Internal server error
  */
 issueRouter.get('/', issueController.getIssues)
 
