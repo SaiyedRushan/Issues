@@ -1,3 +1,6 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite + TailwindCSS + Shadcn UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## STEPS TO RUN THE PROJECT
+
+npm install
+npm run dev
