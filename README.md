@@ -15,6 +15,7 @@ Individual commands
 ### backend
 
 - cd backend
+- copy .env.template to .env
 - npm install
 - npm run dev
 
