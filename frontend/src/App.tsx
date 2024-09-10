@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import axios from "axios"
 import { CreateIssueDialog } from "./components/CreateIssueDialog"
 import { IssueList } from "./components/IssueList"
@@ -12,44 +12,51 @@ interface Record {
 
 const App: React.FC = () => {
   const [records, setRecords] = useState<Record[]>([])
-  const [newRecord, setNewRecord] = useState({ title: "", description: "" })
 
-  const [editingRecord, setEditingRecord] = useState<Record | null>(null)
-  const [deletingRecord, setDeletingRecord] = useState<Record | null>(null)
-
-  const handleCreateRecord = async () => {
-    const { status, data } = await axios.post("/issue", newRecord)
-    if (status == 201 && data) {
-      setRecords([...records, data])
-      setNewRecord({ title: "", description: "" })
+  const getIssues = useCallback(async () => {
+    try {
+      const { data } = await axios.get("/issue")
+      if (data) setRecords(data)
+    } catch (error) {
+      console.error("Error fetching issues:", error)
     }
-  }
-
-  const getIssues = async () => {
-    const { data } = await axios.get("/issue")
-    if (data) setRecords(data)
-  }
-
-  const handleDeleteRecord = async () => {
-    if (!deletingRecord) return
-    const { status, data } = await axios.delete(`/issue/${deletingRecord?._id}`)
-    if (status == 200 && data) {
-      setRecords(records.filter((record) => record._id !== deletingRecord?._id))
-      setDeletingRecord(null)
-    }
-  }
-
-  const handleUpdateRecord = async () => {
-    if (!editingRecord) return
-    const { status, data } = await axios.put(`/issue/${editingRecord?._id}`, editingRecord)
-    if (status == 200 && data) {
-      setRecords(records.map((r) => (r._id === editingRecord?._id ? data : r)))
-      setEditingRecord(null)
-    }
-  }
+  }, [])
 
   useEffect(() => {
     getIssues()
+  }, [getIssues])
+
+  const handleCreateRecord = useCallback(async (newRecord: Omit<Record, "_id">) => {
+    try {
+      const { status, data } = await axios.post("/issue", newRecord)
+      if (status === 201 && data) {
+        setRecords((prevRecords) => [...prevRecords, data])
+      }
+    } catch (error) {
+      console.error("Error creating record:", error)
+    }
+  }, [])
+
+  const handleUpdateRecord = useCallback(async (updatedRecord: Record) => {
+    try {
+      const { status, data } = await axios.put(`/issue/${updatedRecord._id}`, updatedRecord)
+      if (status === 200 && data) {
+        setRecords((prevRecords) => prevRecords.map((r) => (r._id === updatedRecord._id ? data : r)))
+      }
+    } catch (error) {
+      console.error("Error updating record:", error)
+    }
+  }, [])
+
+  const handleDeleteRecord = useCallback(async (id: string) => {
+    try {
+      const { status } = await axios.delete(`/issue/${id}`)
+      if (status === 200) {
+        setRecords((prevRecords) => prevRecords.filter((record) => record._id !== id))
+      }
+    } catch (error) {
+      console.error("Error deleting record:", error)
+    }
   }, [])
 
   return (
