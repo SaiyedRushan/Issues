@@ -24,7 +24,7 @@ export const IssueCard: React.FC<IssueCardProps> = ({ record, onUpdate, onDelete
   }
 
   return (
-    <Card>
+    <Card className='dark:bg-gray-800'>
       <CardHeader>
         <CardTitle>{record.title}</CardTitle>
       </CardHeader>
@@ -49,13 +49,23 @@ export const IssueCard: React.FC<IssueCardProps> = ({ record, onUpdate, onDelete
                 <Label htmlFor='edit-title' className='text-right'>
                   Title
                 </Label>
-                <Input id='edit-title' value={editingRecord?.title || ""} onChange={(e) => setEditingRecord((prev) => (prev ? { ...prev, title: e.target.value } : null))} className='col-span-3' />
+                <Input
+                  id='edit-title'
+                  value={editingRecord?.title || ""}
+                  onChange={(e) => setEditingRecord((prev) => (prev ? { ...prev, title: e.target.value } : null))}
+                  className='col-span-3'
+                />
               </div>
               <div className='grid grid-cols-4 items-center gap-4'>
                 <Label htmlFor='edit-description' className='text-right'>
                   Description
                 </Label>
-                <Input id='edit-description' value={editingRecord?.description || ""} onChange={(e) => setEditingRecord((prev) => (prev ? { ...prev, description: e.target.value } : null))} className='col-span-3' />
+                <Input
+                  id='edit-description'
+                  value={editingRecord?.description || ""}
+                  onChange={(e) => setEditingRecord((prev) => (prev ? { ...prev, description: e.target.value } : null))}
+                  className='col-span-3'
+                />
               </div>
             </div>{" "}
             <Button onClick={handleUpdate}>Update</Button>

@@ -21,7 +21,7 @@ export const CreateIssueDialog: React.FC<CreateIssueDialogProps> = ({ onCreateRe
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
+        <Button className='w-fit'>
           <PlusCircle className='mr-2 h-4 w-4' />
           Create Issue
         </Button>
